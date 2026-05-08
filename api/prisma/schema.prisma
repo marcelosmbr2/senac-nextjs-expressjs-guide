@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  password  String
+  role      String
+  cnhNumber String
+  cnhExpiry DateTime
+  rentals   Rental[]
+}
+
+model Brand {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  vehicles Vehicle[]
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  vehicles    Vehicle[]
+}
+
+model Vehicle {
+  id          Int      @id @default(autoincrement())
+  model       String
+  year        Int
+  plate       String   @unique
+  color       String
+  dailyRate   Float
+  description String?
+  brandId     Int
+  categoryId  Int
+  brand       Brand    @relation(fields: [brandId], references: [id])
+  category    Category @relation(fields: [categoryId], references: [id])
+  rentals     Rental[]
+}
+
+model Rental {
+  id              Int       @id @default(autoincrement())
+  userId          Int
+  vehicleId       Int
+  isActive        Boolean   @default(true)
+  startDate       DateTime  @default(now())
+  totalDays       Int
+  expectedEndDate DateTime
+  returnedAt      DateTime?
+  totalAmount     Float?
+  lateFee         Float?
+  user            User      @relation(fields: [userId], references: [id])
+  vehicle         Vehicle   @relation(fields: [vehicleId], references: [id])
+}
