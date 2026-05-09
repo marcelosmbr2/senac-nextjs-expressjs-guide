@@ -17,6 +17,7 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import api from "@/lib/axios"
 import type { Rental } from "@/types"
+import ReportDialog from "./_components/report-dialog"
 
 export default function RentalsPage() {
   const router = useRouter()
@@ -52,7 +53,10 @@ export default function RentalsPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-xl font-semibold">Locações</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-semibold">Locações</h1>
+        <ReportDialog rentals={rentals} />
+      </div>
 
       <Table>
         <TableHeader>

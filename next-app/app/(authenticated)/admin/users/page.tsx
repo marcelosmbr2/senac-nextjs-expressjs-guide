@@ -44,7 +44,7 @@ export default function UsersPage() {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Usuários</h1>
-        <Button size="sm" onClick={() => router.push("/admin/users/create")}>
+        <Button onClick={() => router.push("/admin/users/create")}>
           <PlusIcon className="mr-2 size-4" />Novo usuário
         </Button>
       </div>

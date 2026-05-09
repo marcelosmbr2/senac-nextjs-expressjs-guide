@@ -16,6 +16,7 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import api from "@/lib/axios"
 import type { Vehicle } from "@/types"
+import ReportDialog from "./_components/report-dialog"
 
 export default function VehiclesPage() {
   const router = useRouter()
@@ -43,9 +44,12 @@ export default function VehiclesPage() {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Veículos</h1>
-        <Button size="sm" onClick={() => router.push("/admin/vehicles/create")}>
-          <PlusIcon className="mr-2 size-4" />Novo veículo
-        </Button>
+        <div className="flex gap-2">
+          <ReportDialog vehicles={vehicles} />
+          <Button onClick={() => router.push("/admin/vehicles/create")}>
+            <PlusIcon className="mr-2 size-4" />Novo veículo
+          </Button>
+        </div>
       </div>
 
       <Table>

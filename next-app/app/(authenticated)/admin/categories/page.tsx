@@ -42,7 +42,7 @@ export default function CategoriesPage() {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Categorias</h1>
-        <Button size="sm" onClick={() => router.push("/admin/categories/create")}>
+        <Button onClick={() => router.push("/admin/categories/create")}>
           <PlusIcon className="mr-2 size-4" />Nova categoria
         </Button>
       </div>
