@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Car, ClipboardList, Info } from "lucide-react"
 import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import api from "@/lib/axios"
@@ -69,14 +69,14 @@ export default function CustomerHomePage() {
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3">
-        <Button render={<Link href="/customer/vehicles" />}>
+        <Link href="/customer/vehicles" className={buttonVariants()}>
           <Car className="h-4 w-4 mr-2" />
           Ver veículos disponíveis
-        </Button>
-        <Button variant="outline" render={<Link href="/customer/rentals" />}>
+        </Link>
+        <Link href="/customer/rentals" className={buttonVariants({ variant: "outline" })}>
           <ClipboardList className="h-4 w-4 mr-2" />
           Minhas locações
-        </Button>
+        </Link>
       </div>
     </div>
   )

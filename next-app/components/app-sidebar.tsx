@@ -27,6 +27,7 @@ import {
 import { useRouter, usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import type { JwtPayload } from "@/types"
+import Link from "next/link"
 
 const navItems = [
   { title: "Dashboard", url: "/admin/home", icon: LayoutDashboardIcon },
@@ -63,7 +64,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" render={<a href="/admin/home" />}>
+            <SidebarMenuButton size="lg" render={<Link href="/admin/home" prefetch />}>
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                 <CarFrontIcon className="size-4" />
               </div>
@@ -84,7 +85,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.url}>
                   <SidebarMenuButton
-                    render={<a href={item.url} />}
+                    render={<Link href={item.url} prefetch />}
                     className={cn(pathname.startsWith(item.url) && "bg-sidebar-accent text-sidebar-accent-foreground")}
                   >
                     <item.icon className="size-4" />

@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import Cookies from "js-cookie"
@@ -8,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -36,7 +38,9 @@ const navLinks = [
 export function CustomerNavbar() {
   const pathname = usePathname()
   const router = useRouter()
-  const customerId = getCustomerIdFromToken()
+  const [customerId, setCustomerId] = useState<number | null>(null)
+
+  useEffect(() => { setCustomerId(getCustomerIdFromToken()) }, [])
 
   function handleLogout() {
     Cookies.remove("token")
@@ -75,7 +79,9 @@ export function CustomerNavbar() {
             {customerId ? `ID: ${customerId}` : "Minha Conta"}
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
+            </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={handleLogout}
