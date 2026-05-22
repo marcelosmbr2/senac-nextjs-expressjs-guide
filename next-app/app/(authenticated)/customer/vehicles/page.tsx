@@ -29,6 +29,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import api from "@/lib/axios"
 import type { Brand, Category, Vehicle } from "@/types"
+import { createRental } from "./actions"
 
 const bookingSchema = z.object({
   totalDays: z.number()
@@ -98,11 +99,11 @@ export default function CustomerVehiclesPage() {
   async function onSubmit(data: BookingForm) {
     if (!bookingVehicle) return
     try {
-      await api.post("/rentals", { vehicleId: bookingVehicle.id, totalDays: data.totalDays })
+      await createRental({ vehicleId: bookingVehicle.id, totalDays: data.totalDays })
       toast.success("Locação registrada com sucesso!")
       closeBooking()
     } catch (error: unknown) {
-      const status = (error as { response?: { status?: number } })?.response?.status
+      const status = (error as { status?: number })?.status
       if (status === 409) {
         toast.error("Veículo indisponível no momento.")
       } else if (status === 400) {

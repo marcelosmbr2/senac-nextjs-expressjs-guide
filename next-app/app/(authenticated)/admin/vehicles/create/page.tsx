@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import api from "@/lib/axios"
 import type { Brand, Category } from "@/types"
+import { createVehicle } from "../actions"
 
 const vehicleSchema = z.object({
   model: z.string().min(1, "Modelo é obrigatório"),
@@ -43,7 +44,7 @@ export default function CreateVehiclePage() {
 
   async function onSubmit(data: VehicleForm) {
     try {
-      await api.post("/vehicles", data)
+      await createVehicle(data)
       toast.success("Veículo criado com sucesso!")
       router.push("/admin/vehicles")
     } catch {

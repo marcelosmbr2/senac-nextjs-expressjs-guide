@@ -17,6 +17,7 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import api from "@/lib/axios"
 import type { User } from "@/types"
+import { deleteUser } from "./actions"
 
 export default function UsersPage() {
   const router = useRouter()
@@ -32,7 +33,7 @@ export default function UsersPage() {
 
   async function handleDelete(id: number) {
     try {
-      await api.delete(`/users/${id}`)
+      await deleteUser(id)
       toast.success("Usuário removido.")
       load()
     } catch {

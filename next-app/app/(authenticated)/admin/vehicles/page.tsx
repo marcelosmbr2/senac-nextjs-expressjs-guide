@@ -16,6 +16,7 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import api from "@/lib/axios"
 import type { Vehicle } from "@/types"
+import { deleteVehicle } from "./actions"
 import ReportDialog from "./_components/report-dialog"
 
 export default function VehiclesPage() {
@@ -32,7 +33,7 @@ export default function VehiclesPage() {
 
   async function handleDelete(id: number) {
     try {
-      await api.delete(`/vehicles/${id}`)
+      await deleteVehicle(id)
       toast.success("Veículo removido.")
       load()
     } catch {

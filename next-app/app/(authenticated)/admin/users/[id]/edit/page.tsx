@@ -16,6 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Skeleton } from "@/components/ui/skeleton"
 import api from "@/lib/axios"
 import type { User } from "@/types"
+import { updateUser } from "../../actions"
 
 const updateSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -56,15 +57,7 @@ export default function EditUserPage() {
 
   async function onSubmit(data: UpdateForm) {
     try {
-      const payload = {
-        name: data.name,
-        email: data.email,
-        role: data.role,
-        cnhNumber: data.cnhNumber,
-        cnhExpiry: new Date(data.cnhExpiry).toISOString(),
-        ...(data.password ? { password: data.password } : {}),
-      }
-      await api.put(`/users/${id}`, payload)
+      await updateUser(id, data)
       toast.success("Usuário atualizado com sucesso!")
       router.push("/admin/users")
     } catch {

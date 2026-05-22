@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import api from "@/lib/axios"
+import { createBrand } from "../actions"
 
 const brandSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -25,7 +25,7 @@ export default function CreateBrandPage() {
 
   async function onSubmit(data: BrandForm) {
     try {
-      await api.post("/brands", data)
+      await createBrand(data)
       toast.success("Marca criada com sucesso!")
       router.push("/admin/brands")
     } catch {

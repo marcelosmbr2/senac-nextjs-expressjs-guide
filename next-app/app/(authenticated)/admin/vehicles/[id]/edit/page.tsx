@@ -15,6 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Skeleton } from "@/components/ui/skeleton"
 import api from "@/lib/axios"
 import type { Brand, Category, Vehicle } from "@/types"
+import { updateVehicle } from "../../actions"
 
 const vehicleSchema = z.object({
   model: z.string().min(1, "Modelo é obrigatório"),
@@ -73,7 +74,7 @@ export default function EditVehiclePage() {
 
   async function onSubmit(data: VehicleForm) {
     try {
-      await api.put(`/vehicles/${id}`, data)
+      await updateVehicle(id, data)
       toast.success("Veículo atualizado com sucesso!")
       router.push("/admin/vehicles")
     } catch {

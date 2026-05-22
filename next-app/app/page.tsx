@@ -4,23 +4,12 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useRouter } from "next/navigation"
-import Cookies from "js-cookie"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import api from "@/lib/axios"
-import type { JwtPayload } from "@/types"
-
-function parseJwtPayload(token: string): JwtPayload | null {
-  try {
-    const [, payload] = token.split(".")
-    return JSON.parse(atob(payload)) as JwtPayload
-  } catch {
-    return null
-  }
-}
+import { login } from "./actions"
 
 const loginSchema = z.object({
   email: z.email("Email inválido"),
@@ -39,13 +28,9 @@ export default function LoginPage() {
 
   async function onSubmit(data: LoginForm) {
     try {
-      const {
-        data: { token },
-      } = await api.post("/login", { email: data.email, password: data.password })
-      Cookies.set("token", token, { expires: 1 / 3 }) // 8 horas
+      const { role } = await login(data)
       toast.success("Login realizado com sucesso!")
-      const payload = parseJwtPayload(token)
-      router.push(payload?.role === "admin" ? "/admin/home" : "/customer/home")
+      router.push(role === "admin" ? "/admin/home" : "/customer/home")
     } catch {
       toast.error("Email ou senha inválidos.")
     }

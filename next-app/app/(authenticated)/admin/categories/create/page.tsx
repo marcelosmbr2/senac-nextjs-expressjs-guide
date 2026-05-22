@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import api from "@/lib/axios"
+import { createCategory } from "../actions"
 
 const categorySchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -26,7 +26,7 @@ export default function CreateCategoryPage() {
 
   async function onSubmit(data: CategoryForm) {
     try {
-      await api.post("/categories", data)
+      await createCategory(data)
       toast.success("Categoria criada com sucesso!")
       router.push("/admin/categories")
     } catch {

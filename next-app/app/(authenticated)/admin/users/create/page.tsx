@@ -11,7 +11,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import api from "@/lib/axios"
+import { createUser } from "../actions"
 
 const createSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -33,7 +33,7 @@ export default function CreateUserPage() {
 
   async function onSubmit(data: CreateForm) {
     try {
-      await api.post("/users", { ...data, cnhExpiry: new Date(data.cnhExpiry).toISOString() })
+      await createUser(data)
       toast.success("Usuário criado com sucesso!")
       router.push("/admin/users")
     } catch {

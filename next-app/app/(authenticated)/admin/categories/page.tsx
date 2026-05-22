@@ -15,6 +15,7 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import api from "@/lib/axios"
 import type { Category } from "@/types"
+import { deleteCategory } from "./actions"
 
 export default function CategoriesPage() {
   const router = useRouter()
@@ -30,7 +31,7 @@ export default function CategoriesPage() {
 
   async function handleDelete(id: number) {
     try {
-      await api.delete(`/categories/${id}`)
+      await deleteCategory(id)
       toast.success("Categoria removida.")
       load()
     } catch {

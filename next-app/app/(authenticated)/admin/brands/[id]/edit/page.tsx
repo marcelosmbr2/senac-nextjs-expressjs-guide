@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label"
 import { Skeleton } from "@/components/ui/skeleton"
 import api from "@/lib/axios"
 import type { Brand } from "@/types"
+import { updateBrand } from "../../actions"
 
 const brandSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -45,7 +46,7 @@ export default function EditBrandPage() {
 
   async function onSubmit(data: BrandForm) {
     try {
-      await api.put(`/brands/${id}`, data)
+      await updateBrand(id, data)
       toast.success("Marca atualizada com sucesso!")
       router.push("/admin/brands")
     } catch {

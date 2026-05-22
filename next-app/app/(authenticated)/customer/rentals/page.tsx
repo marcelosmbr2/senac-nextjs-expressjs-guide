@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import Cookies from "js-cookie"
 import dayjs from "dayjs"
 import { ClipboardList } from "lucide-react"
 import { toast } from "sonner"
@@ -21,7 +20,8 @@ import type { Rental } from "@/types"
 
 function getIdFromToken(): number | null {
   try {
-    const token = Cookies.get("token")
+    const match = document.cookie.split("; ").find((r) => r.startsWith("token="))
+    const token = match?.split("=")[1]
     if (!token) return null
     const [, payload] = token.split(".")
     return JSON.parse(atob(payload)).id ?? null

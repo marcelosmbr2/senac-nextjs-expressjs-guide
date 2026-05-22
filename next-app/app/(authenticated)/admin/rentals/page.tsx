@@ -17,6 +17,7 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import api from "@/lib/axios"
 import type { Rental } from "@/types"
+import { returnRental, deleteRental } from "./actions"
 import ReportDialog from "./_components/report-dialog"
 
 export default function RentalsPage() {
@@ -33,7 +34,7 @@ export default function RentalsPage() {
 
   async function handleReturn(id: number) {
     try {
-      await api.post(`/rentals/${id}/return`)
+      await returnRental(id)
       toast.success("Devolução registrada com sucesso!")
       load()
     } catch {
@@ -43,7 +44,7 @@ export default function RentalsPage() {
 
   async function handleDelete(id: number) {
     try {
-      await api.delete(`/rentals/${id}`)
+      await deleteRental(id)
       toast.success("Locação removida.")
       load()
     } catch {

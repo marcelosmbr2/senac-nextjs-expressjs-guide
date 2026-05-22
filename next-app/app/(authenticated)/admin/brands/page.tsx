@@ -15,6 +15,7 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import api from "@/lib/axios"
 import type { Brand } from "@/types"
+import { deleteBrand } from "./actions"
 
 export default function BrandsPage() {
   const router = useRouter()
@@ -30,7 +31,7 @@ export default function BrandsPage() {
 
   async function handleDelete(id: number) {
     try {
-      await api.delete(`/brands/${id}`)
+      await deleteBrand(id)
       toast.success("Marca removida.")
       load()
     } catch {

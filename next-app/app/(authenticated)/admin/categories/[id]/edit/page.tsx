@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label"
 import { Skeleton } from "@/components/ui/skeleton"
 import api from "@/lib/axios"
 import type { Category } from "@/types"
+import { updateCategory } from "../../actions"
 
 const categorySchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -46,7 +47,7 @@ export default function EditCategoryPage() {
 
   async function onSubmit(data: CategoryForm) {
     try {
-      await api.put(`/categories/${id}`, data)
+      await updateCategory(id, data)
       toast.success("Categoria atualizada com sucesso!")
       router.push("/admin/categories")
     } catch {

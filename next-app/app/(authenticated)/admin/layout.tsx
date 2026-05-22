@@ -6,15 +6,20 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { DynamicBreadcrumb } from "@/components/breadcrumb"
+import { cookies } from "next/headers"
+import { parseJwtPayload } from "@/lib/jwt"
 
-export default function AuthenticatedLayout({
+export default async function AuthenticatedLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const token = (await cookies()).get("token")?.value
+  const payload = parseJwtPayload(token!)
+
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar userId={payload!.id} role={payload!.role} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2">
           <div className="flex items-center gap-2 px-4">

@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import Cookies from "js-cookie"
 import {
   LayoutDashboardIcon,
   CarIcon,
@@ -24,10 +23,10 @@ import {
   SidebarGroupLabel,
   SidebarGroupContent,
 } from "@/components/ui/sidebar"
-import { useRouter, usePathname } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import type { JwtPayload } from "@/types"
 import Link from "next/link"
+import { logout } from "@/app/actions"
 
 const navItems = [
   { title: "Dashboard", url: "/admin/home", icon: LayoutDashboardIcon },
@@ -38,26 +37,13 @@ const navItems = [
   { title: "Usuários", url: "/admin/users", icon: UsersIcon },
 ]
 
-function parseJwt(token: string): JwtPayload | null {
-  try {
-    const [, payload] = token.split(".")
-    return JSON.parse(atob(payload)) as JwtPayload
-  } catch {
-    return null
-  }
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  userId: number
+  role: string
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const router = useRouter()
+export function AppSidebar({ userId, role, ...props }: AppSidebarProps) {
   const pathname = usePathname()
-
-  const token = Cookies.get("token")
-  const payload = token ? parseJwt(token) : null
-
-  function handleLogout() {
-    Cookies.remove("token")
-    router.push("/")
-  }
 
   return (
     <Sidebar variant="inset" {...props}>
@@ -103,11 +89,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <div className="flex items-center gap-2 px-2 py-1 text-sm">
               <div className="grid flex-1 text-left leading-tight">
-                <span className="truncate font-medium">{payload?.role === "admin" ? "Admin" : "Usuário"}</span>
-                <span className="truncate text-xs text-muted-foreground">ID #{payload?.id}</span>
+                <span className="truncate font-medium">{role === "admin" ? "Admin" : "Usuário"}</span>
+                <span className="truncate text-xs text-muted-foreground">ID #{userId}</span>
               </div>
               <button
-                onClick={handleLogout}
+                onClick={() => logout()}
                 className="ml-auto flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
               >
                 <LogOutIcon className="size-4" />

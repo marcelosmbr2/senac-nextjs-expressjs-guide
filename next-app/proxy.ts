@@ -9,34 +9,13 @@
 */
 
 import { NextRequest, NextResponse } from "next/server"
-import type { JwtPayload } from "@/types"
+import { parseJwtPayload } from "@/lib/jwt"
 
 // Rotas que só administradores podem acessar
 const ADMIN_PATHS = ["/admin"]
 
 // Rotas que só clientes (customers) podem acessar
 const CUSTOMER_PATHS = ["/customer"]
-
-/*
-  JWT (JSON Web Token) é uma forma de representar informações de login de forma
-  segura. Ele tem 3 partes separadas por ponto: header.payload.assinatura
-
-  Esta função extrai e decodifica o "payload" (a parte do meio), que contém
-  dados do usuário como o papel dele (admin ou customer).
-
-  Se o token for inválido ou corrompido, retorna null.
-*/
-function parseJwtPayload(token: string): JwtPayload | null {
-  try {
-    // Separa as 3 partes do token e pega apenas a do meio (índice 1)
-    const [, payload] = token.split(".")
-    // atob() decodifica de Base64 para texto; JSON.parse() transforma em objeto
-    return JSON.parse(atob(payload)) as JwtPayload
-  } catch {
-    // Se qualquer passo falhar (token mal formado), retorna null com segurança
-    return null
-  }
-}
 
 /*
   Função principal do Proxy — executada automaticamente pelo Next.js

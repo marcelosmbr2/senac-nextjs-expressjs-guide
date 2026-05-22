@@ -1,9 +1,7 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
-import Cookies from "js-cookie"
+import { usePathname } from "next/navigation"
 import { Car, LogOut, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -16,18 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
-
-function getCustomerIdFromToken(): number | null {
-  try {
-    const token = Cookies.get("token")
-    if (!token) return null
-    const [, payload] = token.split(".")
-    const decoded = JSON.parse(atob(payload))
-    return decoded.id ?? null
-  } catch {
-    return null
-  }
-}
+import { logout } from "@/app/actions"
 
 const navLinks = [
   { href: "/customer/home", label: "Dashboard" },
@@ -35,17 +22,12 @@ const navLinks = [
   { href: "/customer/rentals", label: "Minhas Locações" },
 ]
 
-export function CustomerNavbar() {
+interface CustomerNavbarProps {
+  customerId: number
+}
+
+export function CustomerNavbar({ customerId }: CustomerNavbarProps) {
   const pathname = usePathname()
-  const router = useRouter()
-  const [customerId, setCustomerId] = useState<number | null>(null)
-
-  useEffect(() => { setCustomerId(getCustomerIdFromToken()) }, [])
-
-  function handleLogout() {
-    Cookies.remove("token")
-    router.push("/")
-  }
 
   return (
     <header className="border-b bg-background">
@@ -76,7 +58,7 @@ export function CustomerNavbar() {
         <DropdownMenu>
           <DropdownMenuTrigger render={<Button variant="outline" size="sm" className="gap-2" />}>
             <User className="h-4 w-4" />
-            {customerId ? `ID: ${customerId}` : "Minha Conta"}
+            ID: {customerId}
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuGroup>
@@ -84,7 +66,7 @@ export function CustomerNavbar() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={handleLogout}
+              onClick={() => logout()}
               className="text-destructive gap-2 cursor-pointer"
             >
               <LogOut className="h-4 w-4" />

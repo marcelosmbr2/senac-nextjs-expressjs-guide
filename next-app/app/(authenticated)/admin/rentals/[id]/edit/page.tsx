@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label"
 import { Skeleton } from "@/components/ui/skeleton"
 import api from "@/lib/axios"
 import type { Rental } from "@/types"
+import { updateRental } from "../../actions"
 
 const updateSchema = z.object({
   totalDays: z.number().int().min(1, "Mínimo 1 dia").max(30, "Máximo 30 dias"),
@@ -50,7 +51,7 @@ export default function EditRentalPage() {
 
   async function onSubmit(data: UpdateForm) {
     try {
-      await api.put(`/rentals/${id}`, data)
+      await updateRental(id, data)
       toast.success("Locação atualizada com sucesso!")
       router.push("/admin/rentals")
     } catch {
